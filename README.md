@@ -37,7 +37,7 @@ gini = function(p) {
 }
 ```
 
-#### *|Implementing "Classification Trees" (for simple dataset)|*
+#### *|Implementing "Classification Trees" (for simple dataset- 5 variables)|*
 
 __Data:__ On April 15, 1912, during her maiden voyage, the Titanic sank after colliding with an iceberg, killing 1502 out of 2224 passengers and crew. This sensational tragedy shocked the international community and led to better safety regulations for ships. Our data were collected recording passangers' information including "Name","PClass(socio-economic status)","Age","Sex","Survived or not".
 Extra details of the votes can be found at (https://www.kaggle.com/c/titanic/data/). 
@@ -91,13 +91,11 @@ The categorical variable is split into groups of those variables less than some 
 In particular, this tree growing method doesn't split any node with less than 20 observations(controlled by 'minsplit'). It also doesn't fit very complex looking trees(controlled by 'cp'). 
 
 
-#### *|Implementing "Bagging / randomForest" (for complex dataset)|*
+#### *|Implementing "Bagging / randomForest" (for complex dataset - 62 variables)|*
 
-__Data:__ O
-
-__Story:__ O
-
-<img src="https://user-images.githubusercontent.com/31917400/32564854-545e8918-c4ad-11e7-9f39-a287a1af860f.jpg" width="600" height="200" />
+__Data:__ Statlog (German Credit Data) Data Set. This dataset classifies people described by a set of attributes as good or bad credit risks. Comes in two formats (one all numeric). Also comes with a cost matrix. Extra details of the votes can be found at (https://www.kaggle.com/uciml/german-credit/).  
+  
+<img src="https://user-images.githubusercontent.com/31917400/32568336-cdd7a0ba-c4b5-11e7-88bb-d4f17ba176d0.jpg" width="600" height="580" />
 
 ```
 
