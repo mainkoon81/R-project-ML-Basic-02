@@ -148,7 +148,7 @@ varImp(fitrf)
 ```
 <img src="https://user-images.githubusercontent.com/31917400/32579694-fe6ff08c-c4d9-11e7-8d6e-65f2b7856ced.jpg" />
 
-__Interpretation:__ Judging from the outputs above, their performance seems quite great, and notably, logistic regression classifier registers 100% accuracy. This seemingly overfitting issue stems from the fact that every data is used to build those classifiers. We know there are several methods to reassess those classifiers and build some confidence in their performance. 
+__Interpretation:__ Judging from the outputs above, their performance seems quite great, and notably, logistic regression classifier registers 100% accuracy. This seemingly **overfitting** issue stems from the fact that every data is used to build those classifiers. We know there are several methods to reassess those classifiers and build some confidence in their performance. 
  
  - >_A. General validation: we split the data into three parts – training 50%/validation25%/test25%, and build classifiers based on the training data. Then compare full prediction results yielded by the classifier with validation data and test data from the original so that we can compare their performances.  
 
@@ -190,15 +190,16 @@ pred <- predict(fit.r, type="class", newdata = b.data); pred
 tab <- table(b.data$assigned.labels[ind.valid], pred[ind.valid]); tab
 sum(diag(tab))/sum(tab) # accurracy: 0.896
 
-##As can be seen from above, bagging shows the best performance here, thus we try bagging on the test data to get an accurate assessment of its performance##
+##Here,bagging shows the best performance, thus we try bagging on the test data to get an accurate assessment of its performance##
 ##model fitting 'bagging'+ assessing performance on the test data##
 pred <- predict(fitbag, type="class", newdata = b.data[ind.test, ])
 tab <- pred$confusion; tab
 sum(diag(tab))/sum(tab) # accurracy: 0.906
 ```
-
  - __Bootstrapping validation__ (assessing performance on the **test** data)
+```
 
+```
 
 
 
