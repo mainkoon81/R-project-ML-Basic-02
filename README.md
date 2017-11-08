@@ -5,7 +5,7 @@
 ### [Contents] 
 
 __Lab-04.__ Classification  
-  - package: rpart, partykit, party, adabag, randomForest 
+  - package: rpart, partykit, party, nnet, adabag, randomForest 
   - func:
 
 __Lab-05.__ Dimension reduction 
@@ -91,13 +91,23 @@ The categorical variable is split into groups of those variables less than some 
 In particular, this tree growing method doesn't split any node with less than 20 observations(controlled by 'minsplit'). It also doesn't fit very complex looking trees(controlled by 'cp'). 
 
 
-#### *|Implementing "Bagging / randomForest" (for complex dataset - 62 variables)|*
+#### *|Implementing "Bagging / randomForest" (for complex dataset - 37 variables)|*
 
-__Data:__ Statlog (German Credit Data) Data Set. This dataset classifies people described by a set of attributes as good or bad credit risks. Comes in two formats (one all numeric). Also comes with a cost matrix. Extra details of the votes can be found at (https://www.kaggle.com/uciml/german-credit/).  
+Bagging is a method that uses bootstrapping to increase the stability of a classiﬁcation method.
+Random forests extend this further to make the trees more diverse.
+We can compare a single classiﬁcation tree and logistic regression to bagging and random forests. 
+Using `set.seed(123)` to make the results repeatable.
+
+__Data:__ Lower Back Pain Symptoms Data set, Collection of physical spine data (36 Binary Predictors, 1 three-Class Attribute). Lower back pain can be caused by a variety of problems with any parts of the complex, interconnected network of spinal muscles, nerves, bones, discs, tendons, etc in the lumbar spine. This data set is about to identify a symtom is Nociceptive or Central Neuropathic or Peripheral Neuropathic, using collected physical spine details. Extra details of the votes can be found at (https://www.kaggle.com/sammy123/lower-back-pain-symptoms-dataset). 
+   
+<img src="https://user-images.githubusercontent.com/31917400/32578427-1b6824fc-c4d5-11e7-8bda-b40dcef0f626.jpg" width="600" height="270" />
+
+__Issue:__ We can test how well our classiﬁcation method works on the data that is used to build the classiﬁer. Because the data is used to build the classiﬁer, we cannot avoid overfitting and over estimating our performance. A better approach would be to ﬁt to one data set, choose method on a second and to test on third. We will split the data into three to complete this task.
   
-<img src="https://user-images.githubusercontent.com/31917400/32568336-cdd7a0ba-c4b5-11e7-88bb-d4f17ba176d0.jpg" width="600" height="580" />
 
 ```
+##Fit a classification tree##
+
 
 
 
