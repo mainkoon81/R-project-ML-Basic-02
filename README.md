@@ -104,7 +104,7 @@ __Data:__ Lower Back Pain Symptoms Data set, Collection of physical spine data (
 
 __Issue:__ We can test how well our classiﬁcation method works on the data that is used to build the classiﬁer. Because the data is used to build the classiﬁer, we cannot avoid overfitting and over estimating our performance. A better approach would be to ﬁt to one data set, choose method on a second and to test on third. We will split the data into three to complete this task. In addition, before starting, we need to deal with some missing values detected. In this case, random Forest does not work. Accordingly, those values need to be eliminated (N: 464 => 425)
 
- - __Comparing classifiers__ (assessing performance on the same data)
+ - __Comparing classifiers__ (assessing performance on the **same** data)
 ```
 is.factor(b.data$assigned.labels)
 
@@ -134,13 +134,13 @@ varImp(fitlog)
 
 ##model fitting 'bagging' + assessing performance on the same data##
 fitbag <- bagging(assigned.labels ~., data=b.data)
-pred <- predict(fitbag,type="class", newdata = b.data)
+pred <- predict(fitbag, type="class", newdata = b.data)
 tab <- pred$confusion; tab
 sum(diag(tab))/sum(tab) ##accurracy:0.920(with missing values) -> 0.927(without missing values)## 
 
 ##model fitting 'randomForest' + assessing performance on the same data##
 fitrf <- randomForest(assigned.labels ~., data=b.data); fitrf
-pred <- predict(fitrf,type="class", newdata = b.data)
+pred <- predict(fitrf, type="class", newdata = b.data)
 tab <- table(b.data$assigned.labels, pred); tab
 sum(diag(tab))/sum(tab) ##accurracy: NA -> 0.995##
 plot(fitrf)
@@ -150,16 +150,55 @@ varImp(fitrf)
 
 __Interpretation:__ Judging from the outputs above, their performance seems quite great, and notably, logistic regression classifier registers 100% accuracy. This seemingly overfitting issue stems from the fact that every data is used to build those classifiers. We know there are several methods to reassess those classifiers and build some confidence in their performance. 
  
- - _A. General validation: we split the data into three parts – training 50%/validation25%/test25%, and build classifiers based on the training data. Then compare full prediction results yielded by the classifier with validation data and test data from the original so that we can compare their performances.  
+ - >_A. General validation: we split the data into three parts – training 50%/validation25%/test25%, and build classifiers based on the training data. Then compare full prediction results yielded by the classifier with validation data and test data from the original so that we can compare their performances.  
 
- - _B. Bootstrapping validation: We use a bootstrap sample as training data. When we do bootstraping, classifier is built on the dataset that has the same number of observations of the original data, and it does some of observations repeated, whereas in general splittting, classifier is built on smaller dataset. More importantly, the values bootstrapping is missing becomes the test data. 
+ - >_B. Bootstrapping validation: We use a bootstrap sample as training data. When we do bootstraping, classifier is built on the dataset that has the same number of observations of the original data, and it does some of observations repeated, whereas in general splittting, classifier is built on smaller dataset. More importantly, the values bootstrapping is missing becomes the test data. 
 
- - _C. K-fold cross validation: We divide the data into K groups and differentiate one of those groups (test data) from the rest of them (training data), then build the classifiers based on those K-1 groups and compare the prediction results with the test data. This process continues K times. 
+ - >_C. K-fold cross validation: We divide the data into K groups and differentiate one of those groups (test data) from the rest of them (training data), then build the classifiers based on those K-1 groups and compare the prediction results with the test data. This process continues K times. 
  
- - __Comparing classifiers__ (assessing performance on the same data)
+ - __General validation__ (assessing performance on the **test** data)
+```
+## 1> general ##
+N <- nrow(b.data)
+ind.train <- sample(1:N,size=0.50*N,replace=FALSE)
+ind.train <- sort(ind.train)
+ind.valid <- sample(setdiff(1:N,ind.train),size=0.25*N)
+ind.valid <- sort(ind.valid)
+ind.test <- setdiff(1:N,union(ind.train,ind.valid)) 
+
+##model fitting 'rpart' + assessing performance on the validate data##
+fit.r <- rpart(assigned.labels ~., data=b.data, subset = ind.train); fit.r
+pred <- predict(fit.r, type = 'class', newdata = b.data); pred
+tab <- table(b.data$assigned.labels[ind.valid], pred[ind.valid]); tab
+sum(diag(tab))/sum(tab)  # accuracy: 0.896
+
+##model fitting 'logistic regression'+ assessing performance on the validate data##
+fitlog <- multinom(assigned.labels ~., data=b.data, subset = ind.train); fitlog 
+pred <- predict(fitlog, type='class', newdata = b.data); pred
+tab <- table(b.data$assigned.labels[ind.valid], pred[ind.valid]); tab
+sum(diag(tab))/sum(tab) # accurracy: 0.858
+
+##model fitting 'bagging'+ assessing performance on the validate data##
+fitbag <- bagging(assigned.labels ~., data=b.data[ind.train, ])
+pred <- predict(fitbag, type="class", newdata = b.data[ind.valid, ])
+tab <- pred$confusion; tab
+sum(diag(tab))/sum(tab) # accurracy: 0.896
+
+##model fitting 'randomForest'+ assessing performance on the validate data##
+fitrf <- randomForest(assigned.labels ~., data=b.data, subset = ind.train); fitrf
+pred <- predict(fit.r, type="class", newdata = b.data); pred
+tab <- table(b.data$assigned.labels[ind.valid], pred[ind.valid]); tab
+sum(diag(tab))/sum(tab) # accurracy: 0.896
+
+##As can be seen from above, bagging shows the best performance here, thus we try bagging on the test data to get an accurate assessment of its performance##
+##model fitting 'bagging'+ assessing performance on the test data##
+pred <- predict(fitbag, type="class", newdata = b.data[ind.test, ])
+tab <- pred$confusion; tab
+sum(diag(tab))/sum(tab) # accurracy: 0.906
 ```
 
-```
+ - __Bootstrapping validation__ (assessing performance on the **test** data)
+
 
 
 
