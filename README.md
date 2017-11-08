@@ -100,13 +100,26 @@ Using `set.seed(123)` to make the results repeatable.
 
 __Data:__ Lower Back Pain Symptoms Data set, Collection of physical spine data (36 Binary Predictors, 1 three-Class Attribute). Lower back pain can be caused by a variety of problems with any parts of the complex, interconnected network of spinal muscles, nerves, bones, discs, tendons, etc in the lumbar spine. This data set is about to identify a symtom is Nociceptive or Central Neuropathic or Peripheral Neuropathic, using collected physical spine details. Extra details of the votes can be found at (https://www.kaggle.com/sammy123/lower-back-pain-symptoms-dataset). 
    
-<img src="https://user-images.githubusercontent.com/31917400/32578427-1b6824fc-c4d5-11e7-8bda-b40dcef0f626.jpg" width="600" height="270" />
+<img src="https://user-images.githubusercontent.com/31917400/32578427-1b6824fc-c4d5-11e7-8bda-b40dcef0f626.jpg" width="600" height="230" />
 
-__Issue:__ We can test how well our classiﬁcation method works on the data that is used to build the classiﬁer. Because the data is used to build the classiﬁer, we cannot avoid overfitting and over estimating our performance. A better approach would be to ﬁt to one data set, choose method on a second and to test on third. We will split the data into three to complete this task.
-  
+__Issue:__ We can test how well our classiﬁcation method works on the data that is used to build the classiﬁer. Because the data is used to build the classiﬁer, we cannot avoid overfitting and over estimating our performance. A better approach would be to ﬁt to one data set, choose method on a second and to test on third. We will split the data into three to complete this task. In addition, before starting, we need to deal with some missing values detected. In this case, random Forest does not work. Accordingly, those values need to be eliminated (N: 464 => 425)
 
+ - __Comparing classifiers__ (assessing performance on the same data)
 ```
-##Fit a classification tree##
+is.factor(b.data$assigned.labels)
+
+##missing values detected##
+is.na(b.data$X19) 
+sum(is.na(b.data)) 
+
+##delete rows of NA##
+b.data = na.omit(b.data) 
+dim(b.data) 
+sum(is.na(b.data))
+
+##model fitting 'rpart' + assessing performance on the same data##
+
+
 
 
 
