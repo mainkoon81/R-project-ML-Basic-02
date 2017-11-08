@@ -156,7 +156,7 @@ __Interpretation:__ Judging from the outputs above, their performance seems quit
 
  - >_C. K-fold cross validation: We divide the data into K groups and differentiate one of those groups (test data) from the rest of them (training data), then build the classifiers based on those K-1 groups and compare the prediction results with the test data. This process continues K times. 
  
- - __General validation__ (assessing performance on the **test** data)
+ - __General validation__ (assessing performance on the **validate & test** data)
 ```
 ## 1> general ##
 N <- nrow(b.data)
@@ -165,6 +165,7 @@ ind.train <- sort(ind.train)
 ind.valid <- sample(setdiff(1:N,ind.train),size=0.25*N)
 ind.valid <- sort(ind.valid)
 ind.test <- setdiff(1:N,union(ind.train,ind.valid)) 
+
 
 ##model fitting 'rpart' + assessing performance on the validate data##
 fit.r <- rpart(assigned.labels ~., data=b.data, subset = ind.train); fit.r
@@ -190,17 +191,55 @@ pred <- predict(fit.r, type="class", newdata = b.data); pred
 tab <- table(b.data$assigned.labels[ind.valid], pred[ind.valid]); tab
 sum(diag(tab))/sum(tab) # accurracy: 0.896
 
-##Here,bagging shows the best performance, thus we try bagging on the test data to get an accurate assessment of its performance##
-##model fitting 'bagging'+ assessing performance on the test data##
+## All in all, bagging shows the best performance, thus we try bagging on the test data to get an accurate assessment of its performance. Finally, model fitting 'bagging'+ assessing performance on the test data##
 pred <- predict(fitbag, type="class", newdata = b.data[ind.test, ])
 tab <- pred$confusion; tab
 sum(diag(tab))/sum(tab) # accurracy: 0.906
 ```
  - __Bootstrapping validation__ (assessing performance on the **test** data)
 ```
+## 2> bootstrapping ##
+N <- nrow(b.data)
+ind.train <- sample(1:N,replace=TRUE);ind.train ## bootstrapping new data => training data! ##
+ind.train <- sort(ind.train);ind.train
+ind.test <- setdiff(1:N,ind.train);ind.test ##values bootstrapping is missing##
 
+
+##model fitting 'rpart' + assessing performance on the test data##
+fit.r <- rpart(assigned.labels ~., data=b.data, subset = ind.train)
+pred <- predict(fit.r,type="class",newdata=b.data)
+pred[ind.test]
+tab <- table(b.data$assigned.labels[ind.test],pred[ind.test]); tab
+sum(diag(tab))/sum(tab) # accurracy: 0.8387097
+
+##model fitting 'logistic regression'+ assessing performance on the test data##
+fitlog <- multinom(assigned.labels ~., data=b.data, subset = ind.train) 
+pred <- predict(fitlog, type='class', newdata = b.data); pred
+tab <- table(b.data$assigned.labels[ind.test], pred[ind.test]); tab
+sum(diag(tab))/sum(tab) # accurracy: 0.8387097
+
+##model fitting 'bagging'+ assessing performance on the test data##
+fitbag <- bagging(assigned.labels ~., data=b.data[ind.train, ])
+pred <- predict(fitbag,type="class", newdata = b.data[ind.test, ])
+tab <- pred$confusion; tab
+sum(diag(tab))/sum(tab) # accurracy: 0.8774194
+
+##model fitting 'randomForest'+ assessing performance on the test data##
+fitrf <- randomForest(assigned.labels ~., data=b.data, subset = ind.train)
+pred <- predict(fitrf,type="class", newdata = b.data); pred
+tab <- table(b.data$assigned.labels[ind.test], pred[ind.test]); tab
+sum(diag(tab))/sum(tab) # accurracy: 0.8903226
+
+## All in all, randomForest shows the best performance.
+```
+ - __K-fold cross validation__ (assessing performance on the **test** data) **K=10**
 ```
 
+
+
+
+```
+__Interpretation:__ All in all, it seems that random Forest is the best classifier to this data set, which is underpinned by those multiple validation procedures. When our data is subject to limited usage, bagging, interestingly, shows the greatest performance; however, once extending the scope of data set, and lifting the usage limit - using bootstrap or K-fold cross validation – we were able to obtain more reliable outcomes.   
 
 
 
