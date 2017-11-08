@@ -74,7 +74,27 @@ plot(Survived ~ Sex+Age+PClass, data = titanic)
 <img src="https://user-images.githubusercontent.com/31917400/32566468-ec9574ce-c4af-11e7-8a2e-085dfb2cca30.jpeg" />
 
 When choosing splits in the tree, the distinction between nominal and ordinal categorical variables is important. Passenger class is clearly a categorical variable with ordering 1st, 2nd and 3rd. We can check if it is stored as an ordinal or a nominal variable. 
+```
+is.ordered(titanic$PClass) 
+titanic$PClass <- ordered(titanic$PClass, c('1st', '2nd', '3rd'))
 
+##plotting Classification Tree again##
+fit.c <- ctree(Survived ~ Sex+Age+PClass, data = titanic); fit.c
+plot(fit.c)
+plot(Survived ~ Sex+Age+PClass, data = titanic)
+
+```
+The categorical variable is split into groups of those variables less than some value and greater than or equal to the value.
+
+<img src="https://user-images.githubusercontent.com/31917400/32567070-fdc7eebe-c4b1-11e7-84e8-ac57df330a7d.jpeg" width="600" height="300" />
+
+In particular, this tree growing method doesn't split any node with less than 20 observations(controlled by 'minsplit'). It also doesn't fit very complex looking trees(controlled by 'cp'). 
+
+
+#### *|Bagging + randomForest|*
+```
+
+```
 
 
 
