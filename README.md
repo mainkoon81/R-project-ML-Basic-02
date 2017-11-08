@@ -58,7 +58,7 @@ library(rpart)
 fit.r <- rpart(Survived ~ Sex+Age+PClass, data = titanic); fit.r
 summary(fit.r)
 
-##plotting##
+##plotting Classification Tree##
 plot(fit.r)
 text(fit.r, use.n = T, cex=0.8, xpd=T, col='red')
 
@@ -71,7 +71,10 @@ plot(fit.c)
 plot(Survived ~ Sex+Age+PClass, data = titanic)
 ```
 
+<img src="https://user-images.githubusercontent.com/31917400/32566468-ec9574ce-c4af-11e7-8a2e-085dfb2cca30.jpeg" />
+
 When choosing splits in the tree, the distinction between nominal and ordinal categorical variables is important. Passenger class is clearly a categorical variable with ordering 1st, 2nd and 3rd. We can check if it is stored as an ordinal or a nominal variable. 
+
 
 
 
