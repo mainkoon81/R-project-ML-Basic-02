@@ -148,13 +148,23 @@ varImp(fitrf)
 ```
 <img src="https://user-images.githubusercontent.com/31917400/32579694-fe6ff08c-c4d9-11e7-8d6e-65f2b7856ced.jpg" />
 
- - __Interpretation:__ Judging from the outputs above, their performance seems quite great, and notably, logistic regression classifier registers 100% accuracy. This seemingly overfitting issue stems from the fact that every data is used to build those classifiers. We know there are several methods to reassess those classifiers and build some confidence in their performance. 
+__Interpretation:__ Judging from the outputs above, their performance seems quite great, and notably, logistic regression classifier registers 100% accuracy. This seemingly overfitting issue stems from the fact that every data is used to build those classifiers. We know there are several methods to reassess those classifiers and build some confidence in their performance. 
  
  - _A. General validation: we split the data into three parts – training 50%/validation25%/test25%, and build classifiers based on the training data. Then compare full prediction results yielded by the classifier with validation data and test data from the original so that we can compare their performances.  
 
  - _B. Bootstrapping validation: We use a bootstrap sample as training data. When we do bootstraping, classifier is built on the dataset that has the same number of observations of the original data, and it does some of observations repeated, whereas in general splittting, classifier is built on smaller dataset. More importantly, the values bootstrapping is missing becomes the test data. 
 
  - _C. K-fold cross validation: We divide the data into K groups and differentiate one of those groups (test data) from the rest of them (training data), then build the classifiers based on those K-1 groups and compare the prediction results with the test data. This process continues K times. 
+ 
+ - __Comparing classifiers__ (assessing performance on the same data)
+```
+
+```
+
+
+
+
+
 
 
 
