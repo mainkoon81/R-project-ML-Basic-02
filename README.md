@@ -234,10 +234,86 @@ sum(diag(tab))/sum(tab) # accurracy: 0.8903226
 ```
  - __C. K-fold cross validation__ (assessing performance on the **test** data) **K=10**
 ```
+##First, let's assign the observations to folds##
+K <- 10 
+folds <- rep(1:K,ceiling(N/K)); folds ##1:10 x 43##  
+folds <- sample(folds); folds
+folds <- folds[1:N]; folds ##drop the last five values##
+table(folds)
+#####################################################
+> table(folds) : the size of each fold is 42 or 43...
+folds
+ 1  2  3  4  5  6  7  8  9 10 
+42 43 43 40 43 43 43 43 42 43 
+#####################################################
+##Set up 'res' to store results
+res<-matrix(NA,K,1) ##nrow=k, ncol=1##
+##We will need to drop each fold in turn##
+iterlim <- K
 
 
+##model fitting 'logistic regression'+ assessing performance on the test data##
+for (iter in 1:iterlim)
+{
+  ind.train <- (1:N)[!(folds==iter)] #drop any obv that belongs to 1st fold?????,and call remaining values of training data..??
+  ind.test <- setdiff(1:N,ind.train) #abandoned data...(fold)
+  
+  #Â Fit a classifier to only the training data
+  fitlog <- multinom(assigned.labels ~., data=b.data, subset = ind.train)
+  
+  # Classify for ALL of the observations
+  predlog <- predict(fitlog,type="class",newdata=b.data)
+  
+  # Look at table for the validation data only (rows=truth, cols=prediction)
+  tablog <- table(b.data$assigned.labels[ind.test],predlog[ind.test])
+  
+  #Â Let's see how well we did on the fold that we dropped
+  #Â res[iter,1] <- sum(diag(tab.r))/sum(tab.r)
+  res[iter,1]<-sum(predlog[ind.test]==b.data$assigned.labels[ind.test])/length(ind.test)
+}; res
+colnames(res)<-c("test")
+apply(res,2,summary)
 
 
+##model fitting 'bagging'+ assessing performance on the test data##
+for (iter in 1:iterlim)
+{
+  ind.train <- (1:N)[!(folds==iter)] #drop any obv that belongs to 1st fold?????,and call remaining values of training data..??
+  ind.test <- setdiff(1:N,ind.train) #abandoned data...(fold)
+  
+  #Â Fit a classifier to only the training data
+  fitbag <- bagging(assigned.labels ~., data=b.data[ind.train, ])
+  
+  # Classify for ALL of the observations
+  predbag <- predict(fitbag,type="class",newdata=b.data[ind.test, ])
+  
+  #Â Let's see how well we did on the fold that we dropped
+  #Â res[iter,1] <- sum(diag(tab.r))/sum(tab.r)
+  res[iter,1]<-sum(predbag[ind.test]==b.data$assigned.labels[ind.test])/length(ind.test)
+}; res
+
+
+##model fitting 'randomForest'+ assessing performance on the test data##
+for (iter in 1:iterlim)
+{
+  ind.train <- (1:N)[!(folds==iter)] #drop any obv that belongs to 1st fold?????,and call remaining values of training data..??
+  ind.test <- setdiff(1:N,ind.train) #abandoned data...(fold)
+  
+  #Â Fit a classifier to only the training data
+  fitrf <- randomForest(assigned.labels ~., data=b.data, subset = ind.train)
+  
+  # Classify for ALL of the observations
+  predrf <- predict(fitrf,type="class",newdata=b.data)
+  
+  # Look at table for the validation data only (rows=truth, cols=prediction)
+  tabrf <- table(b.data$assigned.labels[ind.test],predrf[ind.test])
+  
+  #Â Let's see how well we did on the fold that we dropped
+  #Â res[iter,1] <- sum(diag(tab.r))/sum(tab.r)
+  res[iter,1]<-sum(predrf[ind.test]==b.data$assigned.labels[ind.test])/length(ind.test)
+}; res
+colnames(res)<-c("test")
+apply(res,2,summary)
 ```
 __Interpretation:__ All in all, it seems that random Forest is the best classifier to this data set, which is underpinned by those multiple validation procedures. When our data is subject to limited usage, bagging, interestingly, shows the greatest performance; however, once extending the scope of data set, and lifting the usage limit - using bootstrap or K-fold cross validation – we were able to obtain more reliable outcomes.   
 
