@@ -156,7 +156,7 @@ __Interpretation:__ Judging from the outputs above, their performance seems quit
 
  - >_C. K-fold cross validation: We divide the data into K groups and differentiate one of those groups (test data) from the rest of them (training data), then build the classifiers based on those K-1 groups and compare the prediction results with the test data. This process continues K times. 
  
- - __General validation__ (assessing performance on the **validate & test** data)
+ - __A. General validation__ (assessing performance on the **validate & test** data)
 ```
 ## 1> general ##
 N <- nrow(b.data)
@@ -196,7 +196,7 @@ pred <- predict(fitbag, type="class", newdata = b.data[ind.test, ])
 tab <- pred$confusion; tab
 sum(diag(tab))/sum(tab) # accurracy: 0.906
 ```
- - __Bootstrapping validation__ (assessing performance on the **test** data)
+ - __B. Bootstrapping validation__ (assessing performance on the **test** data)
 ```
 ## 2> bootstrapping ##
 N <- nrow(b.data)
@@ -232,7 +232,7 @@ sum(diag(tab))/sum(tab) # accurracy: 0.8903226
 
 ## All in all, randomForest shows the best performance.
 ```
- - __K-fold cross validation__ (assessing performance on the **test** data) **K=10**
+ - __C. K-fold cross validation__ (assessing performance on the **test** data) **K=10**
 ```
 
 
