@@ -37,12 +37,12 @@ gini = function(p) {
 }
 ```
 
+#### *|Implementing "Classification Trees" (for simple dataset)|*
+
 __Data:__ On April 15, 1912, during her maiden voyage, the Titanic sank after colliding with an iceberg, killing 1502 out of 2224 passengers and crew. This sensational tragedy shocked the international community and led to better safety regulations for ships. Our data were collected recording passangers' information including "Name","PClass(socio-economic status)","Age","Sex","Survived or not".
 Extra details of the votes can be found at (https://www.kaggle.com/c/titanic/data/). 
 
 __Story:__ One of the reasons that the shipwreck led to such loss of life was that there were not enough lifeboats for the passengers and crew. Although there was some element of luck involved in surviving the sinking, some groups of people were more likely to survive than others, such as women, children, and the upper-class. In this challenge, we want to predict what sorts of people were likely to survive the tragedy.
-
-#### *|Implementing Classification Trees|*
 
 <img src="https://user-images.githubusercontent.com/31917400/32564854-545e8918-c4ad-11e7-9f39-a287a1af860f.jpg" width="600" height="200" />
 
@@ -91,8 +91,18 @@ The categorical variable is split into groups of those variables less than some 
 In particular, this tree growing method doesn't split any node with less than 20 observations(controlled by 'minsplit'). It also doesn't fit very complex looking trees(controlled by 'cp'). 
 
 
-#### *|Bagging + randomForest|*
+#### *|Implementing "Bagging / randomForest" (for complex dataset)|*
+
+__Data:__ O
+
+__Story:__ O
+
+<img src="https://user-images.githubusercontent.com/31917400/32564854-545e8918-c4ad-11e7-9f39-a287a1af860f.jpg" width="600" height="200" />
+
 ```
+
+
+
 
 ```
 
