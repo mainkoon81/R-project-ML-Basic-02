@@ -255,21 +255,20 @@ iterlim <- K
 ##model fitting 'logistic regression'+ assessing performance on the test data##
 for (iter in 1:iterlim)
 {
-  ind.train <- (1:N)[!(folds==iter)] #drop any obv that belongs to 1st fold?????,and call remaining values of training data..??
+  ind.train <- (1:N)[!(folds==iter)] #drop any obv that belongs to 1st fold, and call remaining values of training data##
   ind.test <- setdiff(1:N,ind.train) #abandoned data...(fold)
   
-  #Â Fit a classifier to only the training data
+  ##Fit a classifier to only the training data##
   fitlog <- multinom(assigned.labels ~., data=b.data, subset = ind.train)
   
-  # Classify for ALL of the observations
+  ##Classify for ALL of the observations##
   predlog <- predict(fitlog,type="class",newdata=b.data)
   
-  # Look at table for the validation data only (rows=truth, cols=prediction)
+  ##Look at table for the validation data only (rows=truth, cols=prediction)##
   tablog <- table(b.data$assigned.labels[ind.test],predlog[ind.test])
   
-  #Â Let's see how well we did on the fold that we dropped
-  #Â res[iter,1] <- sum(diag(tab.r))/sum(tab.r)
-  res[iter,1]<-sum(predlog[ind.test]==b.data$assigned.labels[ind.test])/length(ind.test)
+  ##Let's see how well we did on the fold that we dropped##
+  res[iter,1] <- sum(predlog[ind.test]==b.data$assigned.labels[ind.test])/length(ind.test)
 }; res
 colnames(res)<-c("test")
 apply(res,2,summary)
@@ -278,39 +277,25 @@ apply(res,2,summary)
 ##model fitting 'bagging'+ assessing performance on the test data##
 for (iter in 1:iterlim)
 {
-  ind.train <- (1:N)[!(folds==iter)] #drop any obv that belongs to 1st fold?????,and call remaining values of training data..??
-  ind.test <- setdiff(1:N,ind.train) #abandoned data...(fold)
-  
-  #Â Fit a classifier to only the training data
+  ind.train <- (1:N)[!(folds==iter)] 
+  ind.test <- setdiff(1:N,ind.train) 
   fitbag <- bagging(assigned.labels ~., data=b.data[ind.train, ])
-  
-  # Classify for ALL of the observations
   predbag <- predict(fitbag,type="class",newdata=b.data[ind.test, ])
-  
-  #Â Let's see how well we did on the fold that we dropped
-  #Â res[iter,1] <- sum(diag(tab.r))/sum(tab.r)
-  res[iter,1]<-sum(predbag[ind.test]==b.data$assigned.labels[ind.test])/length(ind.test)
+  res[iter,1] <- sum(predbag[ind.test]==b.data$assigned.labels[ind.test])/length(ind.test)
 }; res
+colnames(res)<-c("test")
+apply(res,2,summary)
 
 
 ##model fitting 'randomForest'+ assessing performance on the test data##
 for (iter in 1:iterlim)
 {
-  ind.train <- (1:N)[!(folds==iter)] #drop any obv that belongs to 1st fold?????,and call remaining values of training data..??
-  ind.test <- setdiff(1:N,ind.train) #abandoned data...(fold)
-  
-  #Â Fit a classifier to only the training data
+  ind.train <- (1:N)[!(folds==iter)] 
+  ind.test <- setdiff(1:N,ind.train) 
   fitrf <- randomForest(assigned.labels ~., data=b.data, subset = ind.train)
-  
-  # Classify for ALL of the observations
   predrf <- predict(fitrf,type="class",newdata=b.data)
-  
-  # Look at table for the validation data only (rows=truth, cols=prediction)
   tabrf <- table(b.data$assigned.labels[ind.test],predrf[ind.test])
-  
-  #Â Let's see how well we did on the fold that we dropped
-  #Â res[iter,1] <- sum(diag(tab.r))/sum(tab.r)
-  res[iter,1]<-sum(predrf[ind.test]==b.data$assigned.labels[ind.test])/length(ind.test)
+  res[iter,1] <- sum(predrf[ind.test]==b.data$assigned.labels[ind.test])/length(ind.test)
 }; res
 colnames(res)<-c("test")
 apply(res,2,summary)
