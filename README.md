@@ -302,6 +302,16 @@ apply(res,2,summary)
 ```
 __Interpretation:__ All in all, it seems that random Forest is the best classifier to this data set, which is underpinned by those multiple validation procedures. When our data is subject to limited usage, bagging, interestingly, shows the greatest performance; however, once extending the scope of data set, and lifting the usage limit - using bootstrap or K-fold cross validation – we were able to obtain more reliable outcomes.   
 
+----------------------------------------------------------------------
+#### >Lab-05. Dimension reduction 
+
+<img src="https://user-images.githubusercontent.com/31917400/32509428-2d131d38-c3e5-11e7-9883-29deec3ade53.jpg" />
+<img src="https://user-images.githubusercontent.com/31917400/32509443-34588dc6-c3e5-11e7-9d73-bd03157ac878.jpg" />
+
+
+
+
+
 
 
 
