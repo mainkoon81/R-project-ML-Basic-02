@@ -1,5 +1,3 @@
-# R-project-ML-Basic(02)
-
 ## Multivariate_Analysis / Machine Learning playground with R
 
 ### [Contents] 
